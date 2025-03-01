@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NEWZEAL_LAND_WORK_API.Data;
+using NEWZEAL_LAND_WORK_API.Domain_Models;
 using NEWZEAL_LAND_WORK_API.DTO;
 
 namespace NEWZEAL_LAND_WORK_API.Controllers
@@ -27,7 +28,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
         }
 
         [HttpGet]
-        [Route("id:Guid")]
+        [Route("Api/GetById/{id:Guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var regionsDomain = await _nZwalksDbcontext.Regions.FirstOrDefaultAsync(x => x.Id == id);
@@ -37,7 +38,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
                 return NotFound();
             }
 
-            // map dto to domain model
+            // map domain model to dto
             var regionDto = new RegionDTO
             {
                 Id = regionsDomain.Id,
@@ -45,9 +46,73 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
                 Name = regionsDomain.Name,
                 RegionImageUrl = regionsDomain.RegionImageUrl,
             };
-
             // return Dto
             return Ok(regionDto);
         }
+
+
+        [HttpPost("api/postrequest")]
+        public IActionResult Create([FromBody] CreateDTO createDTO)
+        {
+            // Map Dto to Domain model
+            var regionDomain = new Region
+            {
+                Code = createDTO.Code,
+                Name = createDTO.Name,
+                RegionImageUrl = createDTO.RegionImageUrl,
+            };
+
+            _nZwalksDbcontext.Regions.Add(regionDomain);
+            _nZwalksDbcontext.SaveChanges();
+
+            // Map Domain model back into Dto
+            var regiondto = new RegionDTO
+            {
+                Id = regionDomain.Id,
+                code = regionDomain.Code,
+                Name = regionDomain.Name,
+                RegionImageUrl = regionDomain.RegionImageUrl,
+            };
+
+            return CreatedAtAction(nameof(GetById),new { id = regiondto.Id}, regiondto);
+
+        }
+
+        [HttpDelete("api/delete/Id:Guid")]
+        public async Task<IActionResult> DeleteResource(Guid Id)
+        {
+            var region = await _nZwalksDbcontext.Regions.FindAsync(Id);
+            if (region == null)
+            {
+                return NotFound();
+            }
+            _nZwalksDbcontext.Regions.Remove(region);
+            await _nZwalksDbcontext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+       
+
+        [HttpPut("api/updateResource/{Id:Guid}")]
+        public async Task<IActionResult> UpdateResource( Guid Id, [FromBody] UpdateResource updateDTO)
+        {
+            var region = await _nZwalksDbcontext.Regions.FirstOrDefaultAsync(i => i.Id == Id);
+            if (region == null)
+            {
+                return NotFound();
+            }
+
+            // Update the region properties
+            region.Name = updateDTO.Name;
+            region.Code = updateDTO.code;
+            region.RegionImageUrl = updateDTO.RegionImageUrl;
+
+            await _nZwalksDbcontext.SaveChangesAsync();
+
+            return Ok(region);
+        }
+
+
     }
 }
