@@ -8,7 +8,7 @@ namespace NEWZEAL_LAND_WORK_API.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder.UseSqlServer("Server=.;Database=StudentManagementAPI;Trusted_Connection=True;TrustServerCertificate=True; MultipleActiveResultSets=true"));
+            base.OnConfiguring(optionsBuilder.UseSqlServer("Server=.;Database=NZwalksDataBase;Trusted_Connection=True;TrustServerCertificate=True; MultipleActiveResultSets=true"));
         }
 
         public NZwalksDbcontext(DbContextOptions<NZwalksDbcontext> options): base(options)
@@ -18,6 +18,6 @@ namespace NEWZEAL_LAND_WORK_API.Data
 
         public DbSet<Region> Regions { get; set; }
 
-        public DbSet<Difficulty> Difficulties { get; set; }
+        public DbSet<Difficulty> Difficulty { get; set; }
     }
 }

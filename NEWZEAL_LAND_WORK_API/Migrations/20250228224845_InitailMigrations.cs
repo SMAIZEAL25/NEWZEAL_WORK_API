@@ -12,7 +12,7 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Difficulties",
+                name: "Difficulty",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -20,7 +20,7 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Difficulties", x => x.Id);
+                    table.PrimaryKey("PK_Difficulty", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -28,7 +28,7 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegionImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -53,9 +53,9 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
                 {
                     table.PrimaryKey("PK_Walks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Walks_Difficulties_DifficultyId",
+                        name: "FK_Walks_Difficulty_DifficultyId",
                         column: x => x.DifficultyId,
-                        principalTable: "Difficulties",
+                        principalTable: "Difficulty",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -84,7 +84,7 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
                 name: "Walks");
 
             migrationBuilder.DropTable(
-                name: "Difficulties");
+                name: "Difficulty");
 
             migrationBuilder.DropTable(
                 name: "Regions");

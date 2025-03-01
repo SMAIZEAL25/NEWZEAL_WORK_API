@@ -12,7 +12,7 @@ using NEWZEAL_LAND_WORK_API.Data;
 namespace NEWZEAL_LAND_WORK_API.Migrations
 {
     [DbContext(typeof(NZwalksDbcontext))]
-    [Migration("20250228124315_InitailMigrations")]
+    [Migration("20250228224845_InitailMigrations")]
     partial class InitailMigrations
     {
         /// <inheritdoc />
@@ -37,7 +37,7 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Difficulties");
+                    b.ToTable("Difficulty");
                 });
 
             modelBuilder.Entity("NEWZEAL_LAND_WORK_API.Domain_Models.Region", b =>
@@ -46,15 +46,15 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegionImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("code")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
