@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NEWZEAL_LAND_WORK_API.Data;
+using NEWZEAL_LAND_WORK_API.MapConfig;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<NZwalksDbcontext>(options => options.UseSqlServer
 (builder.Configuration.GetConnectionString("NzWalksConnectionStrings")));
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 var app = builder.Build();
 
