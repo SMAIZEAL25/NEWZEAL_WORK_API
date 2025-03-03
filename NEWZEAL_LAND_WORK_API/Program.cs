@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NEWZEAL_LAND_WORK_API.Data;
 using NEWZEAL_LAND_WORK_API.MapConfig;
+using NEWZEAL_LAND_WORK_API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,10 @@ builder.Services.AddDbContext<NZwalksDbcontext>(options => options.UseSqlServer
 (builder.Configuration.GetConnectionString("NzWalksConnectionStrings")));
 
 builder.Services.AddAutoMapper(typeof(MappingConfig));
+
+builder.Services.AddScoped<IRepositoriesNZwalks, RepositoriesNZwalksass>();
+builder.Services.AddScoped<IWalksRepository, WalksRepository>();
+  
 
 var app = builder.Build();
 

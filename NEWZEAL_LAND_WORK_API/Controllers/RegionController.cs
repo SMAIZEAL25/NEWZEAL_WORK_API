@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using NEWZEAL_LAND_WORK_API.Data;
 using NEWZEAL_LAND_WORK_API.Domain_Models;
 using NEWZEAL_LAND_WORK_API.DTO;
-using NEWZEAL_LAND_WORK_API.MapConfig;
+using NEWZEAL_LAND_WORK_API.Repositories;
+
 
 namespace NEWZEAL_LAND_WORK_API.Controllers
 {
@@ -15,20 +17,24 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
         private readonly ILogger<RegionController> _logger;
         private readonly NZwalksDbcontext _nZwalksDbcontext;
         private readonly IMapper _mapper;
+        private readonly IRepositoriesNZwalks _repositoriesNZwalks1;
 
-        public RegionController(ILogger<RegionController> logger, NZwalksDbcontext nZwalksDbcontext, IMapper mapper)
+        public RegionController(ILogger<RegionController> logger, IMapper mapper, IRepositoriesNZwalks repositoriesNZwalks)
         {
             _logger = logger;
-            _nZwalksDbcontext = nZwalksDbcontext;
             _mapper = mapper;
+            _repositoriesNZwalks1 = repositoriesNZwalks;
         }
 
         [HttpGet]
         [Route("Api/GetAll")]
         public async Task<IActionResult> GetAll()
         {
-            var regions = await _nZwalksDbcontext.Regions.ToListAsync();
-            return Ok(regions);
+            var regions = await _repositoriesNZwalks1.GetAllNZwalks();
+
+            var regionDtoMapper = _mapper.Map<List<RegionDTO>>(regions);
+
+            return Ok(regionDtoMapper);
         }
 
         [HttpGet]
@@ -76,20 +82,14 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
 
 
         [HttpPut("api/updateResource/{Id:Guid}")]
-        public async Task<IActionResult> UpdateResource(Guid Id, [FromBody] UpdateResource updateDTO)
+        public async Task<IActionResult> UpdateResource([FromRoute] Guid Id, [FromBody] UpdateResource updateDTO)
         {
-            var region = await _nZwalksDbcontext.Regions.FirstOrDefaultAsync(i => i.Id == Id);
+            var region = await _repositoriesNZwalks1.UpdateAsync(Id, updateDTO);
+
             if (region == null)
             {
                 return NotFound();
             }
-
-            // Update the region properties
-            region.Name = updateDTO.Name;
-            region.Code = updateDTO.code;
-            region.RegionImageUrl = updateDTO.RegionImageUrl;
-
-            await _nZwalksDbcontext.SaveChangesAsync();
 
             var regionDto = _mapper.Map<RegionDTO>(region);
 

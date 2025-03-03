@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using NEWZEAL_LAND_WORK_API.Domain_Models;
 using NEWZEAL_LAND_WORK_API.DTO;
-using System.Runtime;
 
 namespace NEWZEAL_LAND_WORK_API.MapConfig
 {
@@ -12,6 +11,9 @@ namespace NEWZEAL_LAND_WORK_API.MapConfig
             CreateMap<Region, RegionDTO>().ReverseMap();
             CreateMap<Region, CreateDTO>().ReverseMap();
             CreateMap<Region, UpdateResource>().ReverseMap();
+            CreateMap<Walk, AddRequestWalksDTO>().ReverseMap();
+            CreateMap<WalkDto, Walk>().ReverseMap();
+            CreateMap<DifficultyDTO, Difficulty>().ReverseMap();
 
         }
     }
