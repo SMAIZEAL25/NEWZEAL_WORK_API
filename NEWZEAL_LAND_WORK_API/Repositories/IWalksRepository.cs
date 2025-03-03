@@ -9,8 +9,6 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
         Task<Walk?> DeleteAsync(Guid Id);
         Task<Walk?> GetByIdAsync(Guid id);
         public Task<List<Walk>> GetWalksAsync();
-
-
-
+        Task<Walk?> UpdateRequestAsync(Guid Id, Walk walk);
     }
 }

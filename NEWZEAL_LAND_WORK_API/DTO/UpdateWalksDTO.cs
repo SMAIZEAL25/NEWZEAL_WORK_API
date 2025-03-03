@@ -2,8 +2,9 @@
 
 namespace NEWZEAL_LAND_WORK_API.DTO
 {
-    public class AddRequestWalksDTO
+    public class UpdateWalksDTO
     {
+
         [Required]
         [MaxLength(100)]
         public required string Name { get; set; }
@@ -11,7 +12,7 @@ namespace NEWZEAL_LAND_WORK_API.DTO
         [MaxLength(1000)]
         public required string Description { get; set; }
         [Required]
-        [Range(0,50)]
+        [Range(0, 50)]
         public double LengthInkm { get; set; }
         public string? WalkImageUrl { get; set; }
         [Required]
@@ -21,4 +22,3 @@ namespace NEWZEAL_LAND_WORK_API.DTO
         public Guid RegionId { get; set; }
     }
 }
- 

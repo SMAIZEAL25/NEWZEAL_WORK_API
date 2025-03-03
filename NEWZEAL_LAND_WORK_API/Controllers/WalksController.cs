@@ -21,10 +21,17 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
         [HttpPost("api/CreateWalks")]
         public async Task<IActionResult> create([FromBody] AddRequestWalksDTO addWalks)
         {
-            var walksMapperResponse = _mapper.Map<Walk>(addWalks);
-            await _repository.AddWalks (walksMapperResponse);
+            if (ModelState.IsValid)
+            {
+                var walksMapperResponse = _mapper.Map<Walk>(addWalks);
+                await _repository.AddWalks(walksMapperResponse);
 
-            return Ok(_mapper.Map<WalkDto>(addWalks));
+                return Ok(_mapper.Map<WalkDto>(addWalks));
+            } else
+            {
+                return BadRequest($"Request was not processed {ModelState}");
+            }
+            
         }
 
         [HttpGet("api/Getwalks")]
@@ -50,30 +57,37 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
 
         [HttpPut("api/UpdateWalks/{id:Guid}")]
 
-        public async Task<IActionResult> UpdateWalks([FromRoute] Guid id, [FromBody] UpdateResource updateRequestWalksDTO)
+        public async Task<IActionResult> UpdateWalks([FromRoute] Guid id, [FromBody] UpdateWalksDTO updateWalksDTO)
         {
-            var walks = await _repository.GetByIdAsync(id);
-            if (walks == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var walksMapperResponse = _mapper.Map<Walk>(updateWalksDTO);
+                var walks = await _repository.UpdateRequestAsync(id, walksMapperResponse);
+                if (walks == null)
+                {
+                    return NotFound();
+                }
+                var mapperResponse = _mapper.Map<WalkDto>(updateWalksDTO);
+
+                return Ok(mapperResponse);
             }
-            var walksMapperResponse = _mapper.Map<Walk>(updateRequestWalksDTO);
-            await _repository.AddWalks(walksMapperResponse);
-            return Ok(_mapper.Map<WalkDto>(updateRequestWalksDTO));
+
+            return BadRequest("Request not processed");
         }
+           
 
 
         [HttpDelete("api/DeleteWalks/{id:Guid}")]
 
         public async Task<IActionResult> DeleteWalks([FromRoute] Guid id)
         {
-            var walks = await _repository.GetByIdAsync(id);
+            var walks = await _repository.DeleteAsync(id);
             if (walks == null)
             {
-                return NotFound();
+                return NotFound(); 
             }
-            await _repository.DeleteAsync(id);
-            return NoContent();
+            var Mapper = _mapper.Map<Walk>(walks);
+            return Ok(Mapper);
         }
 
         

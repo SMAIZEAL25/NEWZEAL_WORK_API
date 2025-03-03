@@ -34,7 +34,7 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Difficulty");
+                    b.ToTable("Difficulty", (string)null);
                 });
 
             modelBuilder.Entity("NEWZEAL_LAND_WORK_API.Domain_Models.Region", b =>
@@ -56,7 +56,7 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Regions");
+                    b.ToTable("Regions", (string)null);
                 });
 
             modelBuilder.Entity("NEWZEAL_LAND_WORK_API.Domain_Models.Walk", b =>
@@ -91,7 +91,7 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
 
                     b.HasIndex("RegionId");
 
-                    b.ToTable("Walks");
+                    b.ToTable("Walks", (string)null);
                 });
 
             modelBuilder.Entity("NEWZEAL_LAND_WORK_API.Domain_Models.Walk", b =>

@@ -23,7 +23,7 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
         }
 
 
-        public async Task<Region?> UpdateAsync(Guid id, UpdateResource updatedRegion)
+        public async Task<Region?> UpdateAsync(Guid id, UpdateRegionDTO updatedRegion)
         {
             var region = await _nZwalksDbcontext.Regions.FirstOrDefaultAsync(i => i.Id == id);
             if (region == null)

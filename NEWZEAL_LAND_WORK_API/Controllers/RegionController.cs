@@ -52,17 +52,47 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
         }
 
         [HttpPost("api/postrequest")]
-        public async Task<IActionResult> Create([FromBody] CreateDTO createDTO)
+        public async Task<IActionResult> Create([FromBody] CreateAddRequestRegionDTODTO createDTO)
         {
-            var regionDomain = _mapper.Map<Region>(createDTO);
+            if (ModelState.IsValid)
+            {
+                var regionDomain = _mapper.Map<Region>(createDTO);
 
-            await _nZwalksDbcontext.Regions.AddAsync(regionDomain);
-            await _nZwalksDbcontext.SaveChangesAsync();
+                await _nZwalksDbcontext.Regions.AddAsync(regionDomain);
+                await _nZwalksDbcontext.SaveChangesAsync();
 
-            var regionDto = _mapper.Map<RegionDTO>(regionDomain);
+                var regionDto = _mapper.Map<RegionDTO>(regionDomain);
 
-            return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+                return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+            }
+
+            return BadRequest($"Request was not processed {ModelState}");
         }
+
+
+        [HttpPut("api/updateResource/{Id:Guid}")]
+        public async Task<IActionResult> UpdateResource([FromRoute] Guid Id, [FromBody] UpdateRegionDTO updateDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var region = await _repositoriesNZwalks1.UpdateAsync(Id, updateDTO);
+
+                if (region == null)
+                {
+                    return NotFound();
+                }
+
+                var regionDto = _mapper.Map<RegionDTO>(region);
+
+                return Ok(regionDto);
+            } else
+            {
+                return BadRequest(ModelState);
+            }
+            
+        }
+
+
 
         [HttpDelete("api/delete/Id:Guid")]
         public async Task<IActionResult> DeleteResource(Guid Id)
@@ -74,22 +104,6 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
             }
             _nZwalksDbcontext.Regions.Remove(region);
             await _nZwalksDbcontext.SaveChangesAsync();
-
-            var regionDto = _mapper.Map<RegionDTO>(region);
-
-            return Ok(regionDto);
-        }
-
-
-        [HttpPut("api/updateResource/{Id:Guid}")]
-        public async Task<IActionResult> UpdateResource([FromRoute] Guid Id, [FromBody] UpdateResource updateDTO)
-        {
-            var region = await _repositoriesNZwalks1.UpdateAsync(Id, updateDTO);
-
-            if (region == null)
-            {
-                return NotFound();
-            }
 
             var regionDto = _mapper.Map<RegionDTO>(region);
 

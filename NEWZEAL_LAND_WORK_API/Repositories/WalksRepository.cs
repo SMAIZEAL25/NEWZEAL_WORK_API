@@ -36,7 +36,7 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
 
         public async Task<Walk?> DeleteAsync(Guid Id)
         {
-            var response = await _nZwalksDbcontext.Walks.FindAsync(Id);
+            var response = await _nZwalksDbcontext.Walks.FirstOrDefaultAsync(x => x.Id == Id);
             if (response == null)
             {
                 return null;
@@ -45,6 +45,29 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
             _nZwalksDbcontext.Walks.Remove(response);
             await _nZwalksDbcontext.SaveChangesAsync();
             return response;
+        }
+
+        public async Task<Walk?> UpdateRequestAsync(Guid Id, Walk walk)
+        {
+            var reponse = await _nZwalksDbcontext.Walks.FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (reponse == null)
+            {
+                return null;
+            }
+
+            reponse.Name = walk.Name;
+            reponse.Description = walk.Description;
+            reponse.RegionId = walk.RegionId;
+            reponse.DifficultyId = walk.DifficultyId;
+            reponse.WalkImageUrl = walk.WalkImageUrl;
+            reponse.LengthInkm = walk.LengthInkm;
+
+            await _nZwalksDbcontext.SaveChangesAsync();
+
+            return reponse;
+
+
         }
 
     }

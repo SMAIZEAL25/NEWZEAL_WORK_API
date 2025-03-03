@@ -7,6 +7,6 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
     {
        
         public Task<List<Region>> GetAllNZwalks();
-        public Task<Region?> UpdateAsync(Guid id, UpdateResource updateResource);
+        public Task<Region?> UpdateAsync(Guid id, UpdateRegionDTO updateResource);
     }
 }
