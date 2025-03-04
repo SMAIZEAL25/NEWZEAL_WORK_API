@@ -4,6 +4,9 @@ namespace NEWZEAL_LAND_WORK_API.DTO
 {
     public class AddRequestWalksDTO
     {
+        
+       
+
         [Required]
         [MaxLength(100)]
         public required string Name { get; set; }

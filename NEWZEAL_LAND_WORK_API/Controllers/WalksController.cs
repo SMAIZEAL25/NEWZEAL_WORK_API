@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NEWZEAL_LAND_WORK_API.Domain_Models;
 using NEWZEAL_LAND_WORK_API.DTO;
 using NEWZEAL_LAND_WORK_API.Repositories;
+using NEWZEAL_LAND_WORK_API.CustomActionModelState;
 
 
 namespace NEWZEAL_LAND_WORK_API.Controllers
@@ -18,43 +19,48 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
             _repository = repository;
             _mapper = mapper;
         }
-        [HttpPost("api/CreateWalks")]
-        public async Task<IActionResult> create([FromBody] AddRequestWalksDTO addWalks)
-        {
-            if (ModelState.IsValid)
-            {
-                var walksMapperResponse = _mapper.Map<Walk>(addWalks);
-                await _repository.AddWalks(walksMapperResponse);
 
-                return Ok(_mapper.Map<WalkDto>(addWalks));
-            } else
-            {
-                return BadRequest($"Request was not processed {ModelState}");
-            }
+
+        // Create Walks
+        [HttpPost("api/CreateWalks")]
+        [ValidationModelState]
+        public async Task<IActionResult> CreatePostAsync([FromBody] AddRequestWalksDTO addWalks)
+        {
+            
+                var walksMapperResponse = _mapper.Map<Walk>(addWalks);
+                await _repository.CreateWalksAsync(walksMapperResponse);
+
+                return Ok(_mapper.Map<WalkDto>(walksMapperResponse));
             
         }
 
+        // Gett ALL Walks
         [HttpGet("api/Getwalks")]
-        public async Task <IActionResult> GetAllWalks()
+        public async Task <IActionResult> GetAllWalks([FromQuery] string? filteron, [FromQuery] string? filterQuery)
         {
-            var response  = await _repository.GetWalksAsync();
+            var response  = await _repository.GetAllWalksAsync(filteron, filterQuery);
             var walksMapperResponse = _mapper.Map<List<WalkDto>>(response);
 
             return Ok(walksMapperResponse);
         }
+
+        // Getby Id walks 
 
         [HttpGet("api/Getwalks/{id:Guid}")]
         public async Task<IActionResult> GetWalksById([FromRoute] Guid id)
         {
-            var response = await _repository.GetByIdAsync(id);
-            if (response == null)
+            var responseWalksDomainModel = await _repository.GetByIdAsync(id);
+            if (responseWalksDomainModel == null)
             {
                return NotFound();
             }
-            var walksMapperResponse = _mapper.Map<List<WalkDto>>(response);
+            var walksMapperResponse = _mapper.Map<WalkDto>(responseWalksDomainModel);
             return Ok(walksMapperResponse);
         }
 
+
+
+        //update Walks
         [HttpPut("api/UpdateWalks/{id:Guid}")]
 
         public async Task<IActionResult> UpdateWalks([FromRoute] Guid id, [FromBody] UpdateWalksDTO updateWalksDTO)
@@ -67,26 +73,26 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
                 {
                     return NotFound();
                 }
-                var mapperResponse = _mapper.Map<WalkDto>(updateWalksDTO);
+                var mapperResponse = _mapper.Map<WalkDto>(walksMapperResponse);
 
                 return Ok(mapperResponse);
             }
 
             return BadRequest("Request not processed");
         }
-           
 
+        //Delete Walks
 
         [HttpDelete("api/DeleteWalks/{id:Guid}")]
 
         public async Task<IActionResult> DeleteWalks([FromRoute] Guid id)
         {
-            var walks = await _repository.DeleteAsync(id);
-            if (walks == null)
+            var Deletedwalks = await _repository.DeleteAsync(id);
+            if (Deletedwalks == null)
             {
                 return NotFound(); 
             }
-            var Mapper = _mapper.Map<Walk>(walks);
+            var Mapper = _mapper.Map<WalkDto>(Deletedwalks);
             return Ok(Mapper);
         }
 

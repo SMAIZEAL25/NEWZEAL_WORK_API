@@ -2,7 +2,7 @@
 
 namespace NEWZEAL_LAND_WORK_API.DTO
 {
-    public class CreateAddRequestRegionDTODTO
+    public class AddRequestRegionDTO
     {
         [Required]
         [MinLength(3, ErrorMessage = "Code has to be a minimium of 3 Characters")]

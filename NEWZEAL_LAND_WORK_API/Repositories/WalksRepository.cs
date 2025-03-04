@@ -15,16 +15,32 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
             this._nZwalksDbcontext = nZwalksDbcontext;
         }
 
-        public async Task<Walk> AddWalks(Walk walks)
+        public async Task<Walk> CreateWalksAsync (Walk walks)
         {
+            var difficultyExists = await _nZwalksDbcontext.Walks.AddAsync(walks);
             var response = await _nZwalksDbcontext.Walks.AddAsync(walks);
             await _nZwalksDbcontext.SaveChangesAsync();
-            return response.Entity;
+            return walks;
+
+            
         }
 
-        public async Task<List<Walk>> GetWalksAsync()
+
+        public async Task<List<Walk>> GetAllWalksAsync (string? filteron = null, string? fillterQuery = null)
         {
-            return await _nZwalksDbcontext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+            var Walks = _nZwalksDbcontext.Walks.Include("Difficulty").Include("Region").AsQueryable();
+            if (string.IsNullOrWhiteSpace(filteron) == false && string.IsNullOrWhiteSpace(fillterQuery) == false)
+            {
+                if (filteron.Equals ("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    Walks = Walks.Where(x => x.Name.Contains(fillterQuery));
+                }
+              
+            }
+
+            return await Walks.ToListAsync();
+            //initial way of retriving records from the database
+            //return await _nZwalksDbcontext.Walks.Include("Difficulty").Include("Region").ToListAsync();
         }
 
         public async Task<Walk?> GetByIdAsync(Guid id)
@@ -34,18 +50,8 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
             return region;
         }
 
-        public async Task<Walk?> DeleteAsync(Guid Id)
-        {
-            var response = await _nZwalksDbcontext.Walks.FirstOrDefaultAsync(x => x.Id == Id);
-            if (response == null)
-            {
-                return null;
-            }
 
-            _nZwalksDbcontext.Walks.Remove(response);
-            await _nZwalksDbcontext.SaveChangesAsync();
-            return response;
-        }
+        
 
         public async Task<Walk?> UpdateRequestAsync(Guid Id, Walk walk)
         {
@@ -68,6 +74,19 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
             return reponse;
 
 
+        }
+
+        public async Task<Walk?> DeleteAsync(Guid Id)
+        {
+            var response = await _nZwalksDbcontext.Walks.FirstOrDefaultAsync(x => x.Id == Id);
+            if (response == null)
+            {
+                return null;
+            }
+
+            _nZwalksDbcontext.Walks.Remove(response);
+            await _nZwalksDbcontext.SaveChangesAsync();
+            return response;
         }
 
     }

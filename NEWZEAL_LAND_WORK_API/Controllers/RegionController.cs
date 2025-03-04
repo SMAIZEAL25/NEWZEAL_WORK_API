@@ -6,6 +6,7 @@ using NEWZEAL_LAND_WORK_API.Data;
 using NEWZEAL_LAND_WORK_API.Domain_Models;
 using NEWZEAL_LAND_WORK_API.DTO;
 using NEWZEAL_LAND_WORK_API.Repositories;
+using NEWZEAL_LAND_WORK_API.CustomActionModelState;
 
 
 namespace NEWZEAL_LAND_WORK_API.Controllers
@@ -52,10 +53,10 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
         }
 
         [HttpPost("api/postrequest")]
-        public async Task<IActionResult> Create([FromBody] CreateAddRequestRegionDTODTO createDTO)
+        [ValidationModelState]
+
+        public async Task<IActionResult> Create([FromBody] AddRequestRegionDTO createDTO)
         {
-            if (ModelState.IsValid)
-            {
                 var regionDomain = _mapper.Map<Region>(createDTO);
 
                 await _nZwalksDbcontext.Regions.AddAsync(regionDomain);
@@ -64,9 +65,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
                 var regionDto = _mapper.Map<RegionDTO>(regionDomain);
 
                 return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
-            }
-
-            return BadRequest($"Request was not processed {ModelState}");
+      
         }
 
 
