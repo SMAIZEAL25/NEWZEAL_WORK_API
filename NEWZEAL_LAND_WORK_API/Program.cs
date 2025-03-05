@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NEWZEAL_LAND_WORK_API.Data;
 using NEWZEAL_LAND_WORK_API.MapConfig;
 using NEWZEAL_LAND_WORK_API.Repositories;
@@ -17,7 +18,37 @@ builder.Services.AddHttpClient();
 
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen( Options =>
+{
+    Options.SwaggerDoc("v1", new() { Title = "NEWZEAL_LAND_WORK_API", Version = "v1" });
+    Options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+    });
+
+    Options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                },
+
+                Scheme = "OAuth2",
+                Name = JwtBearerDefaults.AuthenticationScheme,
+                In = ParameterLocation.Header
+            },
+            //Array.Empty<string>()
+            new List<string> ()
+        }
+});
+});
 
 //Application DB
 builder.Services.AddDbContext<NZwalksDbcontext>(options => options.UseSqlServer
