@@ -6,7 +6,7 @@ namespace NEWZEAL_LAND_WORK_API.Data
 {
     public class NZwalksDbcontext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder  optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder.UseSqlServer("Server=.;Database=NZwalksDataBase;Trusted_Connection=True;TrustServerCertificate=True; MultipleActiveResultSets=true"));
         }

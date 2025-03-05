@@ -7,12 +7,14 @@ using NEWZEAL_LAND_WORK_API.Domain_Models;
 using NEWZEAL_LAND_WORK_API.DTO;
 using NEWZEAL_LAND_WORK_API.Repositories;
 using NEWZEAL_LAND_WORK_API.CustomActionModelState;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace NEWZEAL_LAND_WORK_API.Controllers
 {
     [Route("https/Nzwalksresourse/")]
     [ApiController]
+    [Authorize]
     public class RegionController : ControllerBase
     {
         private readonly ILogger<RegionController> _logger;

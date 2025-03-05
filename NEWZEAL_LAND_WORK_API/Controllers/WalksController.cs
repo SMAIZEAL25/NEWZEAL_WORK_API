@@ -35,17 +35,20 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
         }
 
         // Gett ALL Walks
+        // GET:/api/WWalks?filteron=Name$filterQury=Track&sortby=Name&isAscending=true&pageNumber=1&pageSize=10
         [HttpGet("api/Getwalks")]
-        public async Task <IActionResult> GetAllWalks([FromQuery] string? filteron, [FromQuery] string? filterQuery)
+        public async Task <IActionResult> GetAllWalks([FromQuery] string? filteron, [FromQuery] string? filterQuery,
+            [FromQuery] String? sortBy, [FromQuery] bool? isAscending, 
+            [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
-            var response  = await _repository.GetAllWalksAsync(filteron, filterQuery);
+            var response  = await _repository.GetAllWalksAsync(filteron, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
             var walksMapperResponse = _mapper.Map<List<WalkDto>>(response);
 
             return Ok(walksMapperResponse);
         }
 
         // Getby Id walks 
-
+         
         [HttpGet("api/Getwalks/{id:Guid}")]
         public async Task<IActionResult> GetWalksById([FromRoute] Guid id)
         {
