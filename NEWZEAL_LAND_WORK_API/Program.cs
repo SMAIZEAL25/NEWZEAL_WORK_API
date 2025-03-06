@@ -18,6 +18,7 @@ builder.Services.AddHttpClient();
 
 
 builder.Services.AddEndpointsApiExplorer();
+// Implementation of Authorization with jwt token into this projects
 builder.Services.AddSwaggerGen( Options =>
 {
     Options.SwaggerDoc("v1", new() { Title = "NEWZEAL_LAND_WORK_API", Version = "v1" });

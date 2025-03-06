@@ -12,8 +12,8 @@ using NEWZEAL_LAND_WORK_API.Data;
 namespace NEWZEAL_LAND_WORK_API.Migrations
 {
     [DbContext(typeof(NZwalksDbcontext))]
-    [Migration("20250228224845_InitailMigrations")]
-    partial class InitailMigrations
+    [Migration("20250306165800_Initial Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,31 @@ namespace NEWZEAL_LAND_WORK_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Difficulty");
+                });
+
+            modelBuilder.Entity("NEWZEAL_LAND_WORK_API.Domain_Models.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("FileSizeInBytes")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("images");
                 });
 
             modelBuilder.Entity("NEWZEAL_LAND_WORK_API.Domain_Models.Region", b =>
