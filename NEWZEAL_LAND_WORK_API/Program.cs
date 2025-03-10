@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NEWZEAL_LAND_WORK_API.Data;
 using NEWZEAL_LAND_WORK_API.MapConfig;
 using NEWZEAL_LAND_WORK_API.Repositories;
+using System.Net.NetworkInformation;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -65,6 +67,7 @@ builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddScoped<IRepositoriesNZwalks, RepositoriesNZwalksass>();
 builder.Services.AddScoped<IWalksRepository, WalksRepository>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IImageRepository, LocalImageRepository>();
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddRoles<IdentityRole>()
@@ -122,6 +125,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseStaticFiles( new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider (Path.Combine(Directory.GetCurrentDirectory(), "UploadimagesFloder")),
+
+    RequestPath = "/UploadimagesFloder"
+});
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();

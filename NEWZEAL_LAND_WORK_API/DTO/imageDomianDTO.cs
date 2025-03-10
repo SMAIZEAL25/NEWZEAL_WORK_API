@@ -4,6 +4,7 @@ namespace NEWZEAL_LAND_WORK_API.DTO
 {
     public class ImageDomianDTO
     {
+        [Required]
         public IFormFile File { get; set; }
 
         [Required]
