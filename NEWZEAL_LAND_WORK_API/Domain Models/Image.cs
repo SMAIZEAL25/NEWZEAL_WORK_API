@@ -13,6 +13,8 @@ namespace NEWZEAL_LAND_WORK_API.Domain_Models
 
         public string? FileDescription { get; set; }
 
+        public string FileExtension { get; set; }
+
         public long FileSizeInBytes { get; set; }
 
         public string FilePath { get; set; }

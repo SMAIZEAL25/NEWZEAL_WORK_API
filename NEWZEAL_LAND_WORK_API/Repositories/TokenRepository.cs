@@ -20,7 +20,7 @@ namespace NEWZEAL_LAND_WORK_API.Repositories
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            // Create claims
+            // Create claims 
             var claims = new List<Claim>
     {
         new Claim(JwtRegisteredClaimNames.Sub, identityUser.UserName),
