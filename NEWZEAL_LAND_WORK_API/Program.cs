@@ -2,25 +2,29 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NEWZEAL_LAND_WORK_API.Data;
 using NEWZEAL_LAND_WORK_API.MapConfig;
+using NEWZEAL_LAND_WORK_API.Middleware;
 using NEWZEAL_LAND_WORK_API.Repositories;
-using System.Net.NetworkInformation;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add services to the container 
 
-// Add services to the container.
-builder.Services.AddControllers();
+var Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Warning().CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(Logger);
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-// Implementation of Authorization with jwt token into this projects
+// Implementation of Authorization with jwt token into swagger for this projects
 builder.Services.AddSwaggerGen( Options =>
 {
     Options.SwaggerDoc("v1", new() { Title = "NEWZEAL_LAND_WORK_API", Version = "v1" });
@@ -123,15 +127,20 @@ if (app.Environment.IsDevelopment())
 
 }
 
+app.UseMiddleware<ExceptionHandlerMiddleWare>();
+
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseStaticFiles( new StaticFileOptions
+app.UseRouting();
+app.UseAuthorization();
+app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider (Path.Combine(Directory.GetCurrentDirectory(), "UploadimagesFloder")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "UploadimagesFloder")),
 
     RequestPath = "/UploadimagesFloder"
 });
-app.UseRouting();
-app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
+ 

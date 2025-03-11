@@ -8,6 +8,7 @@ using NEWZEAL_LAND_WORK_API.DTO;
 using NEWZEAL_LAND_WORK_API.Repositories;
 using NEWZEAL_LAND_WORK_API.CustomActionModelState;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 
 namespace NEWZEAL_LAND_WORK_API.Controllers
@@ -32,11 +33,15 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
         [HttpGet]
         [Route("Api/GetAll")]
         [Authorize(Roles = "Reader")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll() 
         {
+            _logger.LogInformation("getall regions action method was invoked");
             var regions = await _repositoriesNZwalks1.GetAllNZwalks();
 
             var regionDtoMapper = _mapper.Map<List<RegionDTO>>(regions);
+
+            // return Dto 
+            _logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionDtoMapper)}");
 
             return Ok(regionDtoMapper);
         }
