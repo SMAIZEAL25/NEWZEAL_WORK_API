@@ -52,6 +52,8 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
 
             // Create a new Exception for the case when the response is empty
             //throw new Exception("No walks found.");
+
+
             var walksMapperResponse = _mapper.Map<List<WalkDto>>(response);
             return Ok(walksMapperResponse);
         }
