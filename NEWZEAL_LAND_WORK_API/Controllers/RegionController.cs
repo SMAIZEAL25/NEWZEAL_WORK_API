@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Update.Internal;
 using NEWZEAL_LAND_WORK_API.Data;
 using NEWZEAL_LAND_WORK_API.Domain_Models;
 using NEWZEAL_LAND_WORK_API.DTO;
@@ -32,7 +31,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
 
         [HttpGet]
         [Route("Api/GetAll")]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll() 
         {
             _logger.LogInformation("getall regions action method was invoked");
@@ -48,7 +47,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
 
         [HttpGet]
         [Route("Api/GetById/{id:Guid}")]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var regionsDomain = await _nZwalksDbcontext.Regions.FirstOrDefaultAsync(x => x.Id == id);
@@ -63,7 +62,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
 
         [HttpPost("api/postrequest")]
         [ValidationModelState]
-        [Authorize(Roles = "Writer")]
+        //[Authorize(Roles = "Writer")]
 
         public async Task<IActionResult> Create([FromBody] AddRequestRegionDTO createDTO)
         {
@@ -81,7 +80,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
 
         [HttpPut("api/updateResource/{Id:Guid}")]
         [ValidationModelState]
-        [Authorize(Roles = "Writer")]
+        //[Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateResource([FromRoute] Guid Id, [FromBody] UpdateRegionDTO updateDTO)
         {
             if (ModelState.IsValid)
@@ -107,7 +106,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
 
         [HttpDelete("api/delete/Id:Guid")]
         [ValidationModelState]
-        [Authorize(Roles = "Writer, Reader")]
+        //[Authorize(Roles = "Writer, Reader")]
         public async Task<IActionResult> DeleteResource(Guid Id)
         {
             var region = await _nZwalksDbcontext.Regions.FindAsync(Id);

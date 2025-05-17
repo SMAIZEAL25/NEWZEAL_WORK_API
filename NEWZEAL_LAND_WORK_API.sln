@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEWZEAL_LAND_WORK_API", "NEWZEAL_LAND_WORK_API\NEWZEAL_LAND_WORK_API.csproj", "{D80C9F8C-32F7-4C54-8D26-A6B2BC707F4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NZWalksUI", "NZWalksUI\NZWalksUI.csproj", "{D30A4FCC-8458-43C2-82E4-3D77AC9710D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D80C9F8C-32F7-4C54-8D26-A6B2BC707F4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D80C9F8C-32F7-4C54-8D26-A6B2BC707F4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D80C9F8C-32F7-4C54-8D26-A6B2BC707F4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D30A4FCC-8458-43C2-82E4-3D77AC9710D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D30A4FCC-8458-43C2-82E4-3D77AC9710D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D30A4FCC-8458-43C2-82E4-3D77AC9710D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D30A4FCC-8458-43C2-82E4-3D77AC9710D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
