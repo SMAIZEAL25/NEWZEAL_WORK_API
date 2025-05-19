@@ -22,7 +22,7 @@ namespace NEWZEAL_LAND_WORK_API.Controllers
         private readonly IMapper _mapper;
         private readonly IRepositoriesNZwalks _repositoriesNZwalks1;
 
-        public RegionController(ILogger<RegionController> logger, IMapper mapper, IRepositoriesNZwalks repositoriesNZwalks)
+        public RegionController (ILogger<RegionController> logger, IMapper mapper, IRepositoriesNZwalks repositoriesNZwalks)
         {
             _logger = logger;
             _mapper = mapper;
